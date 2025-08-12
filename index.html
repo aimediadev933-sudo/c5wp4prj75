@@ -1,1 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High Bandwidth Distributed HPC - Multi-Country Computing Platform</title>
+    <style>
+        :root {
+            --primary: #9A2AA0;
+            --secondary: #DA3FA3;
+            --body: #FCF5EC;
+            --text: #1D1D1B;
+            --secondary-dark: #4E245C;
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--body);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary-dark));
+            color: white;
+            padding: 2.5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -15%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(218, 63, 163, 0.15) 0%, transparent 70%);
+            animation: pulse 12s ease-in-out infinite;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -25%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: conic-gradient(from 0deg, rgba(255, 255, 255, 0.1), transparent, rgba(255, 255, 255, 0.05));
+            animation: rotate 25s linear infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.15; }
+            50% { transform: scale(1.3) rotate(180deg); opacity: 0.25; }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            height: 75px;
+            width: auto;
+            background: white;
+            padding: 18px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+        }
+
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(218, 63, 163, 0.1), transparent);
+            border-radius: 15px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: translateY(-12px) scale(1.1) rotateX(5deg);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo:hover::before {
+            opacity: 1;
+        }
+
+        .hero-text {
+            text-align: center;
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(2.8rem, 7vw, 5rem);
+            margin-bottom: 1.5rem;
+            font-weight: 900;
+            letter-spacing: -2px;
+            background: linear-gradient(45deg, #fff, #DA3FA3, #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textShine 4s ease-in-out infinite;
+        }
+
+        @keyframes textShine {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero-text .subtitle {
+            font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+            opacity: 0.95;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .hero-text .project-badges {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2.5rem;
+        }
+
+        .project-badge {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            font-weight: 700;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .project-badge:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-5px) scale(1.05);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .project-badge:hover::before {
+            left: 100%;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--secondary-dark);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 5px 25px rgba(78, 36, 92, 0.4);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            color: white;
+            text-decoration: none;
+            padding: 1.5rem 3rem;
+            transition: all 0.4s ease;
+            font-weight: 700;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            transition: all 0.4s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(218, 63, 163, 0.2), rgba(154, 42, 160, 0.2));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-item:hover {
+            color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .nav-item:hover::before {
+            width: 90%;
+        }
+
+        .nav-item:hover::after {
+            opacity: 1;
+        }
+
+        /* Main Content */
+        main {
+            padding: 5rem 0;
+        }
+
+        .section {
+            margin-bottom: 7rem;
+            background: white;
+            border-radius: 30px;
+            padding: 4rem;
+            box-shadow: 0 20px 60px rgba(154, 42, 160, 0.12);
+            position: relative;
+            overflow: hidden;
+            transform: translateY(40px);
+            opacity: 0;
+            animation: slideInUp 1.2s ease forwards;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+            background-size: 300% 100%;
+            animation: gradientFlow 4s ease-in-out infinite;
+        }
+
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes slideInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section:nth-child(even) {
+            animation-delay: 0.4s;
+        }
+
+        .section:nth-child(odd) {
+            animation-delay: 0.2s;
+        }
+
+        .section h2 {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 3rem;
+            position: relative;
+            font-weight: 900;
+        }
+
+        .section h3 {
+            font-size: 2rem;
+            color: var(--secondary-dark);
+            margin: 3rem 0 2rem 0;
+            font-weight: 800;
+        }
+
+        /* Countries Showcase */
+        .countries-platform {
+            background: linear-gradient(135deg, rgba(154, 42, 160, 0.08), rgba(218, 63, 163, 0.08));
+            padding: 4rem;
+            border-radius: 25px;
+            margin: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .countries-platform::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(218, 63, 163, 0.05) 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+        }
+
+        .countries-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            margin: 3rem 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .country-hpc-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.5s ease;
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .country-hpc-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(218, 63, 163, 0.15), transparent);
+            transition: left 0.7s ease;
+        }
+
+        .country-hpc-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            border-color: var(--secondary);
+            box-shadow: 0 25px 50px rgba(154, 42, 160, 0.25);
+        }
+
+        .country-hpc-card:hover::before {
+            left: 100%;
+        }
+
+        .country-flag {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .country-name {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .country-org {
+            font-size: 1.2rem;
+            color: var(--secondary-dark);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .country-role {
+            font-size: 1rem;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* HPC Architecture */
+        .hpc-architecture {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 3rem;
+            margin: 4rem 0;
+        }
+
+        .hpc-component {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 3rem;
+            border-radius: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .hpc-component::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            right: -60%;
+            width: 120%;
+            height: 120%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: all 0.5s ease;
+        }
+
+        .hpc-component:hover {
+            transform: translateY(-20px) scale(1.05);
+            box-shadow: 0 30px 60px rgba(154, 42, 160, 0.4);
+        }
+
+        .hpc-component:hover::before {
+            transform: scale(1.5) rotate(45deg);
+        }
+
+        .hpc-icon {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hpc-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hpc-desc {
+            position: relative;
+            z-index: 2;
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        /* Objectives Grid */
+        .objectives-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin: 4rem 0;
+        }
+
+        .objective-card {
+            background: var(--body);
+            padding: 3rem;
+            border-radius: 20px;
+            border-left: 8px solid var(--primary);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .objective-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(154, 42, 160, 0.08), rgba(218, 63, 163, 0.08));
+            transition: width 0.5s ease;
+        }
+
+        .objective-card:hover {
+            transform: translateX(15px);
+            box-shadow: 0 20px 40px rgba(154, 42, 160, 0.18);
+            border-left-color: var(--secondary);
+        }
+
+        .objective-card:hover::before {
+            width: 100%;
+        }
+
+        .objective-card h4 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            position: relative;
+            z-index: 2;
+        }
+
+        .objective-card p {
+            position: relative;
+            z-index: 2;
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        /* Activities Timeline */
+        .activities-timeline {
+            position: relative;
+            margin: 4rem 0;
+        }
+
+        .activities-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+            transform: translateX(-50%);
+            border-radius: 3px;
+        }
+
+        .timeline-activity {
+            position: relative;
+            margin: 4rem 0;
+            width: 45%;
+        }
+
+        .timeline-activity:nth-child(odd) {
+            left: 0;
+            text-align: right;
+        }
+
+        .timeline-activity:nth-child(even) {
+            left: 55%;
+            text-align: left;
+        }
+
+        .activity-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(154, 42, 160, 0.12);
+            position: relative;
+            border: 3px solid var(--body);
+            transition: all 0.4s ease;
+        }
+
+        .activity-content:hover {
+            border-color: var(--secondary);
+            transform: scale(1.03);
+            box-shadow: 0 25px 60px rgba(154, 42, 160, 0.2);
+        }
+
+        .activity-marker {
+            position: absolute;
+            top: 50%;
+            width: 25px;
+            height: 25px;
+            background: var(--secondary);
+            border-radius: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 0 0 6px white, 0 0 0 12px var(--secondary);
+        }
+
+        .timeline-activity:nth-child(odd) .activity-marker {
+            right: -70px;
+        }
+
+        .timeline-activity:nth-child(even) .activity-marker {
+            left: -70px;
+        }
+
+        /* Outcomes & Achievements */
+        .outcomes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin: 4rem 0;
+        }
+
+        .outcome-stat {
+            background: linear-gradient(135deg, var(--secondary-dark), var(--primary));
+            color: white;
+            padding: 3rem;
+            border-radius: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .outcome-stat::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.8s ease;
+        }
+
+        .outcome-stat:hover::before {
+            transform: translateX(100%);
+        }
+
+        .outcome-stat:hover {
+            transform: scale(1.08);
+        }
+
+        .outcome-number {
+            font-size: 4rem;
+            font-weight: 900;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .outcome-label {
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        /* Challenges & Solutions */
+        .challenges-solutions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 4rem;
+            margin: 4rem 0;
+        }
+
+        .challenges-card, .solutions-card {
+            padding: 3rem;
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .challenges-card {
+            background: linear-gradient(135deg, rgba(218, 63, 163, 0.12), rgba(154, 42, 160, 0.08));
+            border-left: 8px solid var(--secondary);
+        }
+
+        .solutions-card {
+            background: linear-gradient(135deg, rgba(154, 42, 160, 0.12), rgba(78, 36, 92, 0.08));
+            border-left: 8px solid var(--primary);
+        }
+
+        /* SDG Section */
+        .sdg-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            margin: 4rem 0;
+        }
+
+        .sdg-card {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .sdg-card::before {
+            content: '';
+            position: absolute;
+            top: -120%;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            background: rgba(255, 255, 255, 0.15);
+            transition: top 0.5s ease;
+        }
+
+        .sdg-card:hover {
+            transform: translateY(-12px) scale(1.03);
+        }
+
+        .sdg-card:hover::before {
+            top: 0;
+        }
+
+        .sdg-number {
+            font-size: 3rem;
+            font-weight: 900;
+            display: block;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .sdg-title {
+            position: relative;
+            z-index: 2;
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        /* Future Vision */
+        .future-hpc {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 5rem;
+            border-radius: 30px;
+            text-align: center;
+            margin: 5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .future-hpc::before {
+            content: '';
+            position: absolute;
+            top: -60%;
+            left: -60%;
+            width: 220%;
+            height: 220%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: rotate 40s linear infinite;
+        }
+
+        .future-hpc h3 {
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .future-hpc p {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary-dark);
+            color: white;
+            text-align: center;
+            padding: 5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 40%, rgba(218, 63, 163, 0.15) 80%);
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .activities-timeline::before {
+                left: 30px;
+            }
+
+            .timeline-activity {
+                width: calc(100% - 80px);
+                left: 80px !important;
+                text-align: left !important;
+            }
+
+            .activity-marker {
+                left: -50px !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .logo-section {
+                gap: 25px;
+            }
+
+            .logo {
+                height: 65px;
+            }
+
+            .section {
+                padding: 3rem;
+            }
+
+            .hero-text .project-badges {
+                gap: 1.5rem;
+            }
+
+            .project-badge {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .nav-item {
+                padding: 1.2rem 2rem;
+                font-size: 0.9rem;
+            }
+
+            .countries-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+
+            .hpc-architecture {
+                grid-template-columns: 1fr;
+            }
+
+            .objectives-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .challenges-solutions {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-text .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .section h2 {
+                font-size: 2.5rem;
+            }
+
+            .countries-platform {
+                padding: 2.5rem;
+            }
+
+            .future-hpc {
+                padding: 3rem;
+            }
+
+            .future-hpc h3 {
+                font-size: 2.2rem;
+            }
+
+            .future-hpc p {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <img src="images/logos/tein-logo.png" alt="TEIN CC" class="logo">
+                    <img src="images/logos/asia-connect-logo.png" alt="Asi@Connect" class="logo">
+                    <img src="images/logos/eu-logo.png" alt="European Union" class="logo">
+                </div>
+                <div class="hero-text">
+                    <h1>High Bandwidth Distributed HPC</h1>
+                    <p class="subtitle">Federated High-Performance Computing Platform Across Asia-Pacific</p>
+                    <div class="project-badges">
+                        <span class="project-badge">WP4 Project</span>
+                        <span class="project-badge">2nd Call</span>
+                        <span class="project-badge">4 Countries</span>
+                        <span class="project-badge">HPC Federation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <div class="nav-container">
+                <a href="#overview" class="nav-item">Overview</a>
+                <a href="#platform" class="nav-item">Platform</a>
+                <a href="#activities" class="nav-item">Activities</a>
+                <a href="#outcomes" class="nav-item">Outcomes</a>
+                <a href="#impact" class="nav-item">Impact</a>
+                <a href="#future" class="nav-item">Future</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <section id="overview" class="section">
+                <h2>Project Overview</h2>
+                <p>The High Bandwidth Distributed HPC project represents a revolutionary approach to scientific computing, creating a federated high-performance computing platform that seamlessly links Korea, Australia, Malaysia, and Pakistan. This cutting-edge infrastructure enables collaborative research through shared GPU/CPU resources, advanced ScienceDMZ architecture, container cloud services, and specialized AI/bioinformatics applications.</p>
+
+                <div class="countries-platform">
+                    <h3>Multi-Country HPC Federation</h3>
+                    <div class="countries-grid">
+                        <div class="country-hpc-card">
+                            <div class="country-flag">🇰🇷</div>
+                            <div class="country-name">Korea</div>
+                            <div class="country-org">KISTI</div>
+                            <div class="country-role">Leading HPC infrastructure and coordination, providing advanced computing resources and technical expertise for the distributed platform.</div>
+                        </div>
+                        <div class="country-hpc-card">
+                            <div class="country-flag">🇦🇺</div>
+                            <div class="country-name">Australia</div>
+                            <div class="country-org">NCI</div>
+                            <div class="country-role">Contributing high-performance computing capabilities and research expertise, enabling large-scale scientific computations and data analysis.</div>
+                        </div>
+                        <div class="country-hpc-card">
+                            <div class="country-flag">🇲🇾</div>
+                            <div class="country-name">Malaysia</div>
+                            <div class="country-org">Perdana University, UPM</div>
+                            <div class="country-role">Focusing on bioinformatics applications and medical research, providing specialized computing resources for genomics and healthcare.</div>
+                        </div>
+                        <div class="country-hpc-card">
+                            <div class="country-flag">🇵🇰</div>
+                            <div class="country-name">Pakistan</div>
+                            <div class="country-org">SIBAU</div>
+                            <div class="country-role">Developing medical AI applications and building local capacity in scientific computing and platform management.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Project Objectives</h3>
+                <div class="objectives-grid">
+                    <div class="objective-card">
+                        <h4>TEIN-Integrated Distributed Platform</h4>
+                        <p>Build a comprehensive, container-based distributed HPC platform that leverages TEIN infrastructure for seamless connectivity and resource sharing across participating countries.</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>Federated ScienceDMZ Infrastructure</h4>
+                        <p>Enable high-speed data exchange through federated ScienceDMZ nodes, ensuring optimal performance for data-intensive scientific applications and research collaborations.</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>AI & Bioinformatics Applications</h4>
+                        <p>Support collaborative AI and bioinformatics applications, enabling researchers to tackle complex computational challenges in medical research and genomics.</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>Local Capacity Building</h4>
+                        <p>Strengthen local expertise in scientific computing and platform management through comprehensive training programs and knowledge transfer initiatives.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="platform" class="section">
+                <h2>HPC Platform Architecture</h2>
+                <p>The distributed HPC platform integrates cutting-edge technologies to create a unified, high-performance computing environment that spans multiple countries and institutions, enabling unprecedented collaboration in scientific research.</p>
+
+                <div class="hpc-architecture">
+                    <div class="hpc-component">
+                        <div class="hpc-icon">🖥️</div>
+                        <div class="hpc-title">Distributed DTN Nodes</div>
+                        <div class="hpc-desc">High-performance Data Transfer Nodes enabling rapid, secure data exchange between research institutions across the federated network.</div>
+                    </div>
+                    <div class="hpc-component">
+                        <div class="hpc-icon">☁️</div>
+                        <div class="hpc-title">Container Cloud Services</div>
+                        <div class="hpc-desc">Kubernetes-based container orchestration providing scalable, flexible deployment of applications and services across the distributed infrastructure.</div>
+                    </div>
+                    <div class="hpc-component">
+                        <div class="hpc-icon">🔐</div>
+                        <div class="hpc-title">Secure Access Management</div>
+                        <div class="hpc-desc">Keycloak-based identity federation ensuring secure, authenticated access to computing resources while maintaining data privacy and security.</div>
+                    </div>
+                    <div class="hpc-component">
+                        <div class="hpc-icon">💾</div>
+                        <div class="hpc-title">Distributed Storage</div>
+                        <div class="hpc-desc">Ceph storage clusters providing reliable, scalable data storage solutions with built-in redundancy and high availability across nodes.</div>
+                    </div>
+                    <div class="hpc-component">
+                        <div class="hpc-icon">📊</div>
+                        <div class="hpc-title">Real-time Monitoring</div>
+                        <div class="hpc-desc">Comprehensive monitoring and analytics systems providing real-time insights into system performance, resource utilization, and application status.</div>
+                    </div>
+                    <div class="hpc-component">
+                        <div class="hpc-icon">🧬</div>
+                        <div class="hpc-title">ScienceDMZ Framework</div>
+                        <div class="hpc-desc">Specialized network architecture optimized for large-scale scientific data transfers and high-performance computing workloads.</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="activities" class="section">
+                <h2>Key Activities & Implementation</h2>
+                
+                <div class="activities-timeline">
+                    <div class="timeline-activity">
+                        <div class="activity-content">
+                            <h4>ScienceDMZ Node Establishment</h4>
+                            <p>Successfully established distributed DTN-enabled ScienceDMZ nodes across all participating countries, creating a high-performance data transfer infrastructure for scientific computing applications.</p>
+                        </div>
+                        <div class="activity-marker"></div>
+                    </div>
+                    
+                    <div class="timeline-activity">
+                        <div class="activity-content">
+                            <h4>Federated Computing Environment</h4>
+                            <p>Developed comprehensive federated computing environments using Kubernetes for orchestration, Ceph for distributed storage, and Keycloak for secure identity management across the platform.</p>
+                        </div>
+                        <div class="activity-marker"></div>
+                    </div>
+                    
+                    <div class="timeline-activity">
+                        <div class="activity-content">
+                            <h4>Medical AI Training in Pakistan</h4>
+                            <p>Conducted specialized training and research programs focused on medical AI applications in Pakistan, building local expertise in healthcare-focused computational research.</p>
+                        </div>
+                        <div class="activity-marker"></div>
+                    </div>
+                    
+                    <div class="timeline-activity">
+                        <div class="activity-content">
+                            <h4>Bioinformatics Research in Malaysia</h4>
+                            <p>Implemented comprehensive bioinformatics research programs in Malaysia, enabling advanced genomics research and computational biology applications on the distributed platform.</p>
+                        </div>
+                        <div class="activity-marker"></div>
+                    </div>
+                    
+                    <div class="timeline-activity">
+                        <div class="activity-content">
+                            <h4>Blockchain-based ID Federation</h4>
+                            <p>Integrated blockchain-based identity federation systems to enhance security and enable seamless authentication across the distributed computing environment.</p>
+                        </div>
+                        <div class="activity-marker"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="outcomes" class="section">
+                <h2>Key Outcomes & Achievements</h2>
+
+                <div class="outcomes-grid">
+                    <div class="outcome-stat">
+                        <span class="outcome-number">4</span>
+                        <span class="outcome-label">Countries Connected</span>
+                    </div>
+                    <div class="outcome-stat">
+                        <span class="outcome-number">100%</span>
+                        <span class="outcome-label">Platform Operational</span>
+                    </div>
+                    <div class="outcome-stat">
+                        <span class="outcome-number">5</span>
+                        <span class="outcome-label">Partner Organizations</span>
+                    </div>
+                    <div class="outcome-stat">
+                        <span class="outcome-number">24/7</span>
+                        <span class="outcome-label">High-Speed Access</span>
+                    </div>
+                </div>
+
+                <h3>Technical Achievements</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin: 2rem 0; padding: 2.5rem; background: linear-gradient(135deg, rgba(154, 42, 160, 0.08), rgba(218, 63, 163, 0.08)); border-radius: 15px; border-left: 6px solid var(--primary);">
+                        <strong>Fully Operational Distributed Platform:</strong> Successfully deployed and validated a distributed HPC platform spanning four countries, enabling seamless resource sharing and collaborative computing capabilities.
+                    </li>
+                    <li style="margin: 2rem 0; padding: 2.5rem; background: linear-gradient(135deg, rgba(154, 42, 160, 0.08), rgba(218, 63, 163, 0.08)); border-radius: 15px; border-left: 6px solid var(--secondary);">
+                        <strong>High-Speed Data Exchange Validation:</strong> Demonstrated secure access and high-speed data exchange capabilities across the federated network, ensuring optimal performance for scientific applications.
+                    </li>
+                    <li style="margin: 2rem 0; padding: 2.5rem; background: linear-gradient(135deg, rgba(154, 42, 160, 0.08), rgba(218, 63, 163, 0.08)); border-radius: 15px; border-left: 6px solid var(--primary);">
+                        <strong>Local Team Training:</strong> Comprehensive training programs delivered to local teams in advanced computing infrastructure, building sustainable expertise in HPC management and applications.
+                    </li>
+                    <li style="margin: 2rem 0; padding: 2.5rem; background: linear-gradient(135deg, rgba(154, 42, 160, 0.08), rgba(218, 63, 163, 0.08)); border-radius: 15px; border-left: 6px solid var(--secondary);">
+                        <strong>AI & Genomics Applications:</strong> Successfully deployed and validated AI applications for medical research and bioinformatics workflows for genomics research across the distributed platform.
+                    </li>
+                </ul>
+
+                <h3>Research Impact</h3>
+                <div class="objectives-grid">
+                    <div class="objective-card">
+                        <h4>Medical AI Advancement</h4>
+                        <p>Enabled breakthrough research in medical AI applications, providing computational resources and expertise for healthcare innovation in Pakistan and regional partners.</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>Bioinformatics Research</h4>
+                        <p>Facilitated advanced genomics research and computational biology studies in Malaysia, contributing to scientific understanding in life sciences and healthcare.</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>Cross-Border Collaboration</h4>
+                        <p>Established a framework for seamless international research collaboration, enabling scientists to share resources and expertise across institutional and national boundaries.</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>Technology Transfer</h4>
+                        <p>Successfully transferred advanced HPC technologies and expertise to participating countries, building long-term capacity for scientific computing and research.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="impact" class="section">
+                <h2>Challenges & Strategic Solutions</h2>
+
+                <div class="challenges-solutions">
+                    <div class="challenges-card">
+                        <h3 style="color: var(--secondary-dark); margin-bottom: 2rem;">Challenges Overcome</h3>
+                        <div style="space-y: 2rem;">
+                            <div style="margin: 1.5rem 0; padding: 2rem; background: rgba(255, 255, 255, 0.8); border-radius: 12px;">
+                                <strong>Hardware Procurement Delays:</strong> COVID-19 pandemic and flooding in Pakistan caused significant delays in equipment procurement and delivery, requiring adaptive project management and timeline adjustments.
+                            </div>
+                            <div style="margin: 1.5rem 0; padding: 2rem; background: rgba(255, 255, 255, 0.8); border-radius: 12px;">
+                                <strong>Customs Clearance Issues:</strong> Complex international shipping and customs procedures slowed node installation and deployment across different countries with varying regulations.
+                            </div>
+                            <div style="margin: 1.5rem 0; padding: 2rem; background: rgba(255, 255, 255, 0.8); border-radius: 12px;">
+                                <strong>Infrastructure Variability:</strong> Power and resource variability across participating countries required adaptive deployment strategies and flexible system configurations.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="solutions-card">
+                        <h3 style="color: var(--primary); margin-bottom: 2rem;">Strategic Solutions</h3>
+                        <div style="space-y: 2rem;">
+                            <div style="margin: 1.5rem 0; padding: 2rem; background: rgba(255, 255, 255, 0.8); border-radius: 12px;">
+                                <strong>Flexible Deployment Strategy:</strong> Implemented adaptive deployment approaches that accommodated varying timelines and local conditions while maintaining platform integrity and performance.
+                            </div>
+                            <div style="margin: 1.5rem 0; padding: 2rem; background: rgba(255, 255, 255, 0.8); border-radius: 12px;">
+                                <strong>Enhanced Coordination:</strong> Established robust international coordination mechanisms to streamline equipment procurement and customs clearance processes across borders.
+                            </div>
+                            <div style="margin: 1.5rem 0; padding: 2rem; background: rgba(255, 255, 255, 0.8); border-radius: 12px;">
+                                <strong>Adaptive Architecture:</strong> Designed platform architecture to accommodate varying power and resource conditions, ensuring reliable operation across diverse infrastructure environments.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Contributing to Sustainable Development Goals</h3>
+                <div class="sdg-showcase">
+                    <div class="sdg-card">
+                        <span class="sdg-number">SDG 9</span>
+                        <span class="sdg-title">Industry, Innovation and Infrastructure</span>
+                    </div>
+                    <div class="sdg-card">
+                        <span class="sdg-number">SDG 4</span>
+                        <span class="sdg-title">Quality Education</span>
+                    </div>
+                    <div class="sdg-card">
+                        <span class="sdg-number">SDG 17</span>
+                        <span class="sdg-title">Partnerships for the Goals</span>
+                    </div>
+                </div>
+            </section>
+
+            <section id="future" class="section">
+                <h2>Future Directions & Expansion</h2>
+
+                <h3>Integration & Scaling</h3>
+                <p>The project roadmap includes comprehensive integration with APAN/APBioNet networks, expanding the platform's reach and capabilities to serve a broader research community across the Asia-Pacific region. This integration will enhance collaborative opportunities and resource sharing among regional research institutions.</p>
+
+                <h3>Enhanced Use Cases</h3>
+                <p>Future development will focus on expanding use case coverage and HPC network scaling, incorporating emerging computational needs in areas such as climate modeling, materials science, and advanced AI applications. The platform will evolve to support increasingly complex and diverse scientific computing requirements.</p>
+
+                <div class="future-hpc">
+                    <h3>Vision for Distributed Scientific Computing</h3>
+                    <p>The High Bandwidth Distributed HPC project is establishing a new paradigm for international scientific collaboration, where researchers can seamlessly access and share computational resources across continents. This foundation will accelerate scientific discovery, enable breakthrough research in critical areas like healthcare and climate science, and foster unprecedented levels of international cooperation in the pursuit of knowledge.</p>
+                </div>
+
+                <h3>Sustainable Development</h3>
+                <div class="objectives-grid">
+                    <div class="objective-card">
+                        <h4>Multilingual Training Resources</h4>
+                        <p>Develop comprehensive, multilingual training materials and documentation to support broader adoption and ensure accessibility across diverse linguistic communities.</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>Open Dataset Development</h4>
+                        <p>Create and maintain open datasets for research applications, enabling researchers worldwide to access high-quality data for scientific investigations and validations.</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>Regional Network Expansion</h4>
+                        <p>Extend the platform to additional countries and institutions across the Asia-Pacific region, creating a truly comprehensive distributed computing ecosystem.</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4>Advanced Research Applications</h4>
+                        <p>Support next-generation research applications in emerging fields such as quantum computing simulation, advanced AI model training, and large-scale data analytics.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <h3>High Bandwidth Distributed HPC</h3>
+                <p>Pioneering federated high-performance computing across Asia-Pacific through innovative technology integration and international collaboration.</p>
+                <p style="margin-top: 2.5rem; opacity: 0.9; font-size: 1.2rem;">
+                    Multi-country federation spanning Korea, Australia, Malaysia, and Pakistan<br>
+                    Enabling breakthrough scientific research through shared computational resources
+                </p>
+                <p style="margin-top: 2rem; font-size: 1rem; opacity: 0.8;">
+                    WP4 Project - 2nd Call | HPC Federation • ScienceDMZ • AI/Bioinformatics • Container Cloud
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -120px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections for animations
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Enhanced interactive effects for HPC components
+        document.querySelectorAll('.hpc-component').forEach(component => {
+            component.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-20px) scale(1.05)';
+                this.style.boxShadow = '0 30px 60px rgba(154, 42, 160, 0.4)';
+            });
+            
+            component.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+                this.style.boxShadow = 'none';
+            });
+        });
+
+        // Country HPC card interactions
+        document.querySelectorAll('.country-hpc-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-15px) scale(1.02)';
+                this.style.borderColor = 'var(--secondary)';
+                this.style.boxShadow = '0 25px 50px rgba(154, 42, 160, 0.25)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+                this.style.borderColor = 'transparent';
+                this.style.boxShadow = 'none';
+            });
+        });
+
+        // Outcome stat animations
+        document.querySelectorAll('.outcome-stat').forEach(stat => {
+            stat.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.08)';
+            });
+            
+            stat.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+
+        // Objective card hover effects
+        document.querySelectorAll('.objective-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateX(15px)';
+                this.style.boxShadow = '0 20px 40px rgba(154, 42, 160, 0.18)';
+                this.style.borderLeftColor = 'var(--secondary)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateX(0)';
+                this.style.boxShadow = 'none';
+                this.style.borderLeftColor = 'var(--primary)';
+            });
+        });
+
+        // Timeline activity interactions
+        document.querySelectorAll('.activity-content').forEach(content => {
+            content.addEventListener('mouseenter', function() {
+                this.style.borderColor = 'var(--secondary)';
+                this.style.transform = 'scale(1.03)';
+                this.style.boxShadow = '0 25px 60px rgba(154, 42, 160, 0.2)';
+            });
+            
+            content.addEventListener('mouseleave', function() {
+                this.style.borderColor = 'var(--body)';
+                this.style.transform = 'scale(1)';
+                this.style.boxShadow = '0 15px 40px rgba(154, 42, 160, 0.12)';
+            });
+        });
+
+        // SDG card effects
+        document.querySelectorAll('.sdg-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-12px) scale(1.03)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Progressive section loading animation
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.section');
+            const triggerBottom = window.innerHeight / 5 * 4;
+            
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                
+                if (sectionTop < triggerBottom) {
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        // Initialize page animations and effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Stagger section animations
+            setTimeout(() => {
+                document.querySelectorAll('.section').forEach((section, index) => {
+                    setTimeout(() => {
+                        section.style.opacity = '1';
+                        section.style.transform = 'translateY(0)';
+                    }, index * 200);
+                });
+            }, 500);
+
+            // Add floating animation to header logos
+            document.querySelectorAll('.logo').forEach((logo, index) => {
+                logo.style.animationDelay = `${index * 0.4}s`;
+            });
+        });
+
+        // Add dynamic background effects for enhanced visual appeal
+        function createAnimatedBackground() {
+            const header = document.querySelector('header');
+            for (let i = 0; i < 4; i++) {
+                const element = document.createElement('div');
+                element.style.position = 'absolute';
+                element.style.width = `${80 + Math.random() * 40}px`;
+                element.style.height = `${80 + Math.random() * 40}px`;
+                element.style.background = 'rgba(255, 255, 255, 0.03)';
+                element.style.borderRadius = '50%';
+                element.style.top = Math.random() * 100 + '%';
+                element.style.left = Math.random() * 100 + '%';
+                element.style.animation = `float ${10 + Math.random() * 6}s ease-in-out infinite`;
+                element.style.animationDelay = Math.random() * 6 + 's';
+                header.appendChild(element);
+            }
+        }
+
+        // Initialize enhanced background effects
+        createAnimatedBackground();
+    </script>
+</body>
+</html>
